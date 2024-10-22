@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Special Website</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #ffcccb;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    .box {
+      padding: 30px;
+      text-align: center;
+      max-width: 100%;
+    }
+
+    .pikachu {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: white;
+      color: black;
+      box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    #text1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    #text2 {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    #no-btn.move {
+      position: absolute;
+    }
+
+    .falling-objects {
+      position: absolute;
+      top: -100px;
+      animation: fall 5s infinite linear;
+      opacity: 0.8;
+      width: 40px;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh);
+        opacity: 0.3;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .box {
+        padding: 20px;
+      }
+
+      button {
+        padding: 8px 16px;
+        margin: 8px;
+        font-size: 14px;
+      }
+
+      .pikachu {
+        max-width: 150px;
+      }
+
+      #text1 {
+        font-size: 20px;
+      }
+
+      #text2 {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="box">
+      <img src="pikachu1.gif" alt="Pikachu" id="pikachu-image" class="pikachu">
+      <p id="text1">Ooy mese pyaar krti hai ya nahi? 🤗</p>
+      <p id="text2">🌹Shubham bas tera hai!</p>
+      <div class="buttons">
+        <button id="yes-btn">Yes</button>
+        <button id="no-btn">No</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="falling-container"></div>
+
+  <script>
+    let clickCount = 0;
+    const maxClicks = 4;
+    const text1 = document.getElementById('text1');
+    const text2 = document.getElementById('text2');
+    const noBtn = document.getElementById('no-btn');
+    const yesBtn = document.getElementById('yes-btn');
+    const pikachuImage = document.getElementById('pikachu-image');
+    const fallingContainer = document.getElementById('falling-container');
+
+    const textChanges = [
+      ["Soch le ache se!🙄", "inti jaldi nhi mat bol🤐"],
+      ["Chal ek baar or soch le!😫", "Kyu aisa kar rhi hai🥺"],
+      ["Maan Jaa n Kitna Bhav Khaegi ab!😭", "Bahot galat baat hai ye!😏"],
+      ["Okay, Bahot hua!😿", "Chal Haa bol ab!😍"]
+    ];
+
+    const pikachuGifs = [
+      "pikachu2.gif",
+      "pikachu3.gif",
+      "pikachu4.gif",
+      "pikachu5.gif"
+    ];
+
+    noBtn.addEventListener('click', () => {
+      if (clickCount < maxClicks) {
+        text1.textContent = textChanges[clickCount][0];
+        text2.textContent = textChanges[clickCount][1];
+        pikachuImage.src = pikachuGifs[clickCount];
+        clickCount++;
+      } else {
+        noBtn.style.position = 'absolute';
+        const randomX = Math.floor(Math.random() * (window.innerWidth - noBtn.offsetWidth));
+        const randomY = Math.floor(Math.random() * (window.innerHeight - noBtn.offsetHeight));
+        noBtn.style.left = `${randomX}px`;
+        noBtn.style.top = `${randomY}px`;
+      }
+    });
+
+    yesBtn.addEventListener('click', () => {
+      text1.textContent = "Hehehe!🥰 mai janta tha🤩";
+      text2.textContent = "Hum dono ki jodi🫂 best hai! 😊";
+      pikachuImage.src = "happy-pikachu.gif";
+      noBtn.style.display = 'none';
+      yesBtn.style.display = 'none';
+
+      for (let i = 0; i < 30; i++) {
+        const flower = document.createElement('img');
+        flower.src = 'flower.png';
+        flower.classList.add('falling-objects');
+        flower.style.left = `${Math.random() * 100}vw`;
+        flower.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        flower.style.animationDelay = `${Math.random() * 5}s`;
+        fallingContainer.appendChild(flower);
+      }
+    });
+  </script>
+</body>
+</html>
